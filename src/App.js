@@ -5,13 +5,20 @@ import './App.css';
 
 import tshirt from "./assets/tshirt.svg";
 
-import {CardGroup, Card, Button, Container} from 'react-bootstrap';
+import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup} from 'react-bootstrap';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 
 import AppHeader from './components/header.js';
 import Product from './components/product.js';
+import Products from './components/products.js'; // list of all products
 import ProductCard from './components/card.js';
+import Details from './components/details.js';
 import Error404 from './components/404.js';
 
+library.add(faSearch, faShoppingCart)
 class App extends Component {
 
 
@@ -19,13 +26,13 @@ class App extends Component {
     return (
       <React.Fragment>
         <AppHeader/>
-        <Link to="product">
-          <img src={tshirt} alt="tshirt" height="75" width="75"/>
-        </Link>
+        <FontAwesomeIcon icon="shopping-cart" />
+        <SearchBar/>
         <Switch>
-          <Route exact path="/" component={Product}/>
+          <Route exact path="/" component={Products}/>
           <Route path="/product" component={Product}/>
           <Route path="/card" component={ProductCard}/>
+          <Route path="/details" component={Details}/>
           <Route component={Error404}/>
         </Switch>
       </React.Fragment>
@@ -106,6 +113,25 @@ class Element extends Component{
   }
 
 
+}
+
+// Search Bar component for the search of items
+class SearchBar extends Component{
+  render(){
+    return(
+      <div className="container-fluid searchbar">
+        <div className="row justify-content-center align-items-center">
+          <Form inline>
+            <FormGroup>
+              <FormControl  size="lg" type="text" placeholder="Search For Product" className="mr-sm-2 text-center" />
+              <Button size="lg" variant="outline-success"><FontAwesomeIcon icon="search" /></Button>
+            </FormGroup>
+          </Form>
+        </div>
+      </div>
+
+    );
+  }
 }
 
 export default App;
