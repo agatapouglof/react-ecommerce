@@ -14,7 +14,7 @@ import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import AppHeader from './components/header.js';
 import Product from './components/product.js';
 import Products from './components/products.js'; // list of all products
-import ProductCard from './components/card.js';
+import ProductCart from './components/cart.js';
 import Details from './components/details.js';
 import Error404 from './components/404.js';
 
@@ -31,7 +31,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Products}/>
           <Route path="/product" component={Product}/>
-          <Route path="/card" component={ProductCard}/>
+          <Route path="/cart" component={ProductCart}/>
           <Route path="/details" component={Details}/>
           <Route component={Error404}/>
         </Switch>

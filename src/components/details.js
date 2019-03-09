@@ -40,7 +40,9 @@ class Details extends Component {
                     Back to Products !
                   </Button>
                 </Link>
-                <Button variant="outline-primary" className="ml-3"> Add to Cart </Button>
+                <Link to={{pathname : "/cart", state : {newproduct : product } }}>
+                  <Button variant="outline-primary" className="ml-3"> Add to Cart </Button>
+                </Link>
               </div>
             </div>
           </div>
