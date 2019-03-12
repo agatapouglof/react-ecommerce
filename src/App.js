@@ -9,7 +9,7 @@ import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup} from '
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 
 import AppHeader from './components/header.js';
 import Product from './components/product.js';
@@ -18,32 +18,147 @@ import ProductCart from './components/cart.js';
 import Details from './components/details.js';
 import Error404 from './components/404.js';
 
-library.add(faSearch, faShoppingCart)
+library.add(faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle)
 class App extends Component {
-
+  constructor(props){
+    super(props);
+    let cart = [];
+    if(localStorage.getItem('cart')){
+      cart = JSON.parse(localStorage.getItem('cart'))
+    }
+    this.state = {
+      products : [],
+      cart : cart,
+      totalAmount : 0
+    };
+    this.addToCart = this.addToCart.bind(this);
+    this.incrementProduct = this.incrementProduct.bind(this);
+    this.removeFromCart = this.removeFromCart.bind(this);
+    this.decrementProduct = this.decrementProduct.bind(this);
+  }
+  componentWillMount(){
+    console.log("Will Mount");
+  }
+  componentDidMount(){
+    this.calculTotalCart();
+  }
 
   render() {
     return (
       <React.Fragment>
         <AppHeader/>
+        <h3 className="text-left text-primary">{this.state.totalAmount}</h3>
         <FontAwesomeIcon icon="shopping-cart" />
         <SearchBar/>
         <Switch>
-          <Route exact path="/" component={Products}/>
+          {/*
+            <Route exact path="/" component={Products}/>
+
+          */}
+          <Route exact path="/" render={(routeprops) => (<Products location={this.props.location} {...routeprops} addToCart={this.addToCart }/>)}/>
           <Route path="/product" component={Product}/>
-          <Route path="/cart" component={ProductCart}/>
+          <Route path="/cart" render={(routeprops) =>
+              (<ProductCart location={this.props.location}
+                 {...routeprops} addToCart={this.addToCart }
+                  cart={this.state.cart}
+                   incrementProduct={this.incrementProduct}
+                   decrementProduct={this.decrementProduct}
+                   removeFromCart={this.removeFromCart}/>)}/>
           <Route path="/details" component={Details}/>
           <Route component={Error404}/>
         </Switch>
       </React.Fragment>
     );
   }
+  addToCart(product){
+      const cart = this.state.cart;
+      let newCart = [];
+
+      if(!this.isInCart(product)){
+        cart.push(product);
+        this.setState({cart : cart });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        // this.setState((state,props) => {
+        //   return {totalAmount : state.totalAmount + Number(product.price)};
+        // })
+        this.calculTotalCart();
+      }
+  }
+  isInCart(product){
+    let cart = this.state.cart;
+    return  cart.some((el) => {
+      return el.product_id == product.product_id;
+    });
+  }
+  calculTotalCart(){
+    let cart = this.state.cart;
+    let total = 0;
+    total = cart.reduce((total,val)=>{return total + Number(val.price) * Number(val.qty)},0);
+    localStorage.setItem('totalCart', JSON.stringify(total));
+    this.setState({totalAmount : total});
+    // return total;
+  }
+  incrementProduct(product_id){
+    let cart = this.state.cart;
+    console.log('show increment product in app js');
+    cart.map((elt)=>{
+      if(elt.product_id == product_id){
+        elt.qty = elt.qty+1;
+        return elt;
+      }else{
+        return elt;
+      }
+    });
+    console.log(cart);
+    this.setState({cart : cart})
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.calculTotalCart();
+
+  }
+  decrementProduct(product_id){
+    let cart = this.state.cart;
+    cart.map((elt)=>{
+      if(elt.product_id == product_id){
+        elt.qty = elt.qty-1;
+        return elt;
+      }else{
+        return elt;
+      }
+    });
+    this.setState({cart : cart})
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.calculTotalCart();
+  }
+  removeFromCart(product_id){
+    console.log('remove from cart')
+    let cart = this.state.cart;
+    let prom = new Promise(function(resolve,reject){
+      let newCart = cart.filter((elt) => {
+        return elt.product_id != product_id
+      })
+      console.log('resolve');
+      resolve(newCart);
+    });
+    prom.then((elt) =>  {
+      console.log("then");
+      console.log(elt);
+
+      this.setState({cart  : elt})
+      this.calculTotalCart();
+      localStorage.setItem('cart',  JSON.stringify(elt))
+    })
+
+
+      // console.log("newCart", newCart);
+      // return {cart :  newCart}
+    // })
+    // this.setState({cart  : newCart})
+    // console.log(this.state);
+    this.calculTotalCart();
+  }
 
 }
 
-// <div className="App">
-//   <Element/>
-// </div>
 class Element extends Component{
 
   constructor(props){
@@ -54,7 +169,7 @@ class Element extends Component{
     }
   }
   componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch("http://locallhost:4000/products")
       .then(res => res.json())
       .then(
         (result) => {
@@ -89,7 +204,7 @@ class Element extends Component{
               elements.map(elt => (
 
               <Card style={{ width: '18rem' }} key={elt.id}>
-                <Card.Img variant="top" src="https://placeimg.com/640/480/any" />
+                <Card.Img variant="top" src={"http://localhost:4000/images"+elt.image} />
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
                   <Card.Text>

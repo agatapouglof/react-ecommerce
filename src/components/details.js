@@ -28,7 +28,8 @@ class Details extends Component {
           </div>
           <div className="row">
             <div className="col-10 mx-auto col-md-6 my-3 text-center text-capitalize">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuVpiC7KWb48BX-LKcPKvaB1kd2iOAisZ_hMX46B_f7vvjLCDe" className="img-fluid" alt="product"/>
+             {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuVpiC7KWb48BX-LKcPKvaB1kd2iOAisZ_hMX46B_f7vvjLCDe" className="img-fluid" alt="product"/>*/}
+              <img src={"http://localhost:4000/images/"+product.image} className="img-fluid" alt="product"/>
             </div>
             <div className="col-10 mx-auto col-md-6 my-3 text-center text-capitalize">
               <h2>text</h2>
@@ -40,7 +41,7 @@ class Details extends Component {
                     Back to Products !
                   </Button>
                 </Link>
-                <Link to={{pathname : "/cart", state : {newproduct : product } }}>
+                <Link to={{pathname : "/cart", state : {newproduct : product} }}>
                   <Button variant="outline-primary" className="ml-3"> Add to Cart </Button>
                 </Link>
               </div>
@@ -58,7 +59,8 @@ class Details extends Component {
   }
 
   componentDidMount(){
-    console.log("component did mount", this.props.location.state.product)
+    console.log("component did mount", this.props.location.state)
+    console.log("details props", this.props)
     if(this.props.location){
       this.setState({product  : this.props.location.state.product});
     }
