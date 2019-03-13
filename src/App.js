@@ -9,7 +9,7 @@ import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup} from '
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle, faUser } from '@fortawesome/free-solid-svg-icons'
 
 import AppHeader from './components/header.js';
 import Product from './components/product.js';
@@ -18,20 +18,30 @@ import ProductCart from './components/cart.js';
 import Details from './components/details.js';
 import Error404 from './components/404.js';
 import Pagination from './components/pagination.js';
+import Register from './components/register.js';
+import Login from './components/login.js';
+import Footer from './components/footer.js';
 
 
-library.add(faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle)
+library.add(faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle, faUser)
 class App extends Component {
   constructor(props){
+    console.log(process.env.REACT_APP_API_URL);
     super(props);
     let cart = [];
+    let user = null;
     if(localStorage.getItem('cart')){
       cart = JSON.parse(localStorage.getItem('cart'))
+    }
+    if(localStorage.getItem('user')){
+       user = JSON.parse(localStorage.getItem('user'))
+      console.log("IS USER IN STORAGE");
     }
     this.state = {
       products : [],
       showProducts : [],
       cart : cart,
+      user : user,
       totalAmount : 0
     };
     this.addToCart = this.addToCart.bind(this);
@@ -42,7 +52,7 @@ class App extends Component {
   }
   componentWillMount(){
     console.log("Will Mount");
-    fetch("http://localhost:4000/products")
+    fetch(process.env.REACT_APP_API_URL+"/products")
       .then(res => res.json())
       .then(
         (result) => {
@@ -68,9 +78,8 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <AppHeader/>
+        <AppHeader cart={this.state.cart}/>
         <h3 className="text-left text-primary">{this.state.totalAmount}</h3>
-        <FontAwesomeIcon icon="shopping-cart" />
         <Switch>
           {/*
             <Route exact path="/" component={Products}/>
@@ -87,8 +96,11 @@ class App extends Component {
                    decrementProduct={this.decrementProduct}
                    removeFromCart={this.removeFromCart}/>)}/>
           <Route path="/details" component={Details}/>
+          <Route path="/register" component={Register}/>
+          <Route path="/login" component={Login}/>
           <Route component={Error404}/>
         </Switch>
+        <Footer/>
       </React.Fragment>
     );
   }

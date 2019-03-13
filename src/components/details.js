@@ -20,6 +20,7 @@ class Details extends Component {
     const product = this.state.product;
     if(product){
       return(
+        <React.Fragment>
         <div className="container py-5">
           <div className="row">
             <div className="col-10 mx-auto text-center my-5 text-success">
@@ -48,6 +49,8 @@ class Details extends Component {
             </div>
           </div>
         </div>
+      </React.Fragment>
+
       );
     }else{
       return (

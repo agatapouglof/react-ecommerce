@@ -4,9 +4,17 @@ import './pages.css';
 import { Link} from 'react-router-dom';
 import {Bootstrap, Grid, Row, Col, Button, Navbar, Nav, NavDropdown, Form, FormControl} from 'react-bootstrap';
 import tshirt from "../assets/tshirt.svg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 
 class AppHeader extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      cart : []
+    }
+  }
   render(){
     return (
       <React.Fragment>
@@ -20,10 +28,19 @@ class AppHeader extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/cart">Cart</Nav.Link>
-              <Nav.Link href="#link">My Account</Nav.Link>
+              <Nav.Link href="#link">
+                <button className="btn btn-outline-primary">
+                  <FontAwesomeIcon icon="user" />
+                  Profile
+                </button>
+              </Nav.Link>
             </Nav>
-            <Button variant="outline-success">Search</Button>
+            <Link to="/cart">
+              <button type="button" className="btn btn-lg btn-outline-success">
+                <FontAwesomeIcon icon="shopping-cart" />
+                <span className="mx-2 badge badge-light">{this.props.cart.length}</span>
+              </button>
+            </Link>
           </Navbar.Collapse>
         </Navbar>
       </React.Fragment>

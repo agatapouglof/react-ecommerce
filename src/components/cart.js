@@ -107,7 +107,6 @@ class CartElement extends Component{
           </td>
           <td data-th="Subtotal" className="text-center">$ {qty * Number(product.price)}</td>
           <td className="actions" data-th="">
-            <button className="btn btn-info btn-sm"><FontAwesomeIcon icon="sync-alt" /></button>
             <button className="btn btn-danger btn-sm" onClick={(e) => this.removeFromCart(e,product.product_id)}><FontAwesomeIcon icon="trash" /></button>
           </td>
         </tr>

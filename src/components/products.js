@@ -25,14 +25,14 @@ class Products extends Component {
     // const products = this.state.showProducts;
     const products = this.props.showProducts;
     if(!this.state.isLoaded){
-      return <h1>No Data Loaded</h1>
+      return <h1 className="tex-center text-info">No Data Loaded</h1>
     }else{
       return(
           <React.Fragment>
             <SearchBar handleSearch={this.props.handleSearch}/>
             <div className="py-5">
               <div className="container">
-                <Pagination totalRecords={110} pageLimit={10} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+                <Pagination totalRecords={110} pageLimit={10} pageNeighbours={1} onPageChanged={this.props.onPageChanged} />
                 <div className="row">
                   {
                     products.map(prod => {
@@ -51,7 +51,7 @@ class Products extends Component {
   }
   componentDidMount() {
     console.log("productssss did mount", this.props);
-    fetch("http://localhost:4000/products")
+    fetch(process.env.REACT_APP_API_URL+"/products")
       .then(res => res.json())
       .then(
         (result) => {
@@ -81,8 +81,7 @@ class Products extends Component {
    const offset = (currentPage - 1) * pageLimit;
    const showProducts = this.state.products.slice(offset, offset + pageLimit);
 
-   this.setState({
-     currentPage, showProducts, totalPages });
+   this.setState({currentPage, showProducts, totalPages });
  }
 
 
