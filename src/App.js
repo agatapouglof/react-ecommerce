@@ -17,6 +17,8 @@ import Products from './components/products.js'; // list of all products
 import ProductCart from './components/cart.js';
 import Details from './components/details.js';
 import Error404 from './components/404.js';
+import Pagination from './components/pagination.js';
+
 
 library.add(faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle)
 class App extends Component {
@@ -28,6 +30,7 @@ class App extends Component {
     }
     this.state = {
       products : [],
+      showProducts : [],
       cart : cart,
       totalAmount : 0
     };

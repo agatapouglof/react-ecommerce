@@ -38,7 +38,7 @@ class Product extends Component {
     );
   }
   componentDidMount(){
-    console.log("product did mount",this.props);
+    // console.log("product did mount",this.props);
   }
 }
 
