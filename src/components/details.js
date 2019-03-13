@@ -32,9 +32,9 @@ class Details extends Component {
               <img src={"http://localhost:4000/images/"+product.image} className="img-fluid" alt="product"/>
             </div>
             <div className="col-10 mx-auto col-md-6 my-3 text-center text-capitalize">
-              <h2>text</h2>
-              <h2 className="text-muted">text</h2>
-              <h2>text</h2>
+              <h2>{product.name}</h2>
+              <h5 className="text-muted">{product.description}</h5>
+              <h2>Price : {product.price}</h2>
               <div>
                 <Link to="/">
                   <Button variant="outline-warning">

@@ -38,9 +38,28 @@ class App extends Component {
     this.incrementProduct = this.incrementProduct.bind(this);
     this.removeFromCart = this.removeFromCart.bind(this);
     this.decrementProduct = this.decrementProduct.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
   componentWillMount(){
     console.log("Will Mount");
+    fetch("http://localhost:4000/products")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            products: result,
+            showProducts: result.slice(0,10)
+          });
+          console.log(result)
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
   }
   componentDidMount(){
     this.calculTotalCart();
@@ -52,18 +71,18 @@ class App extends Component {
         <AppHeader/>
         <h3 className="text-left text-primary">{this.state.totalAmount}</h3>
         <FontAwesomeIcon icon="shopping-cart" />
-        <SearchBar/>
         <Switch>
           {/*
             <Route exact path="/" component={Products}/>
 
           */}
-          <Route exact path="/" render={(routeprops) => (<Products location={this.props.location} {...routeprops} addToCart={this.addToCart }/>)}/>
-          <Route path="/product" component={Product}/>
+          <Route exact path="/" render={(routeprops) => (<Products location={this.props.location} {...routeprops} addToCart={this.addToCart } handleSearch={this.handleSearch} showProducts={this.state.showProducts}/>)}/>
+          <Route path="/product" render={(routeprops) => (<Product handleSearch={this.handleSearch}/>)} />
           <Route path="/cart" render={(routeprops) =>
               (<ProductCart location={this.props.location}
                  {...routeprops} addToCart={this.addToCart }
                   cart={this.state.cart}
+                  totalAmount={this.state.totalAmount}
                    incrementProduct={this.incrementProduct}
                    decrementProduct={this.decrementProduct}
                    removeFromCart={this.removeFromCart}/>)}/>
@@ -160,6 +179,17 @@ class App extends Component {
     this.calculTotalCart();
   }
 
+  handleSearch(e){
+    console.log(e.target.value);
+    let toSearch = e.target.value
+    let result =  this.state.products.filter((elt) =>{
+      return elt.name.toLowerCase().includes(toSearch,0);
+    })
+    this.setState({showProducts : result})
+    console.log(result);
+    e.preventDefault();
+  }
+
 }
 
 class Element extends Component{
@@ -233,23 +263,6 @@ class Element extends Component{
 
 }
 
-// Search Bar component for the search of items
-class SearchBar extends Component{
-  render(){
-    return(
-      <div className="container-fluid searchbar">
-        <div className="row justify-content-center align-items-center">
-          <Form inline>
-            <FormGroup>
-              <FormControl  size="lg" type="text" placeholder="Search For Product" className="mr-sm-2 text-center" />
-              <Button size="lg" variant="outline-success"><FontAwesomeIcon icon="search" /></Button>
-            </FormGroup>
-          </Form>
-        </div>
-      </div>
 
-    );
-  }
-}
 
 export default App;

@@ -44,7 +44,7 @@ class ProductCart extends Component {
               <tr>
                 <td><Link to="/"><button className="btn btn-outline-warning">Continue Shopping</button></Link> </td>
                 <td colSpan="2" className="hidden-xs"></td>
-                <td className="hidden-xs text-center"><strong>Total $1.99</strong></td>
+                <td className="hidden-xs text-center"><strong>Total $ {this.props.totalAmount}</strong></td>
                 <td><a href="#" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></a></td>
               </tr>
             </tfoot>
