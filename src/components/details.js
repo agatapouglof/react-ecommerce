@@ -30,10 +30,10 @@ class Details extends Component {
           <div className="row">
             <div className="col-10 mx-auto col-md-6 my-3 text-center text-capitalize">
              {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuVpiC7KWb48BX-LKcPKvaB1kd2iOAisZ_hMX46B_f7vvjLCDe" className="img-fluid" alt="product"/>*/}
-              <img src={"http://localhost:4000/images/"+product.image} className="img-fluid" alt="product"/>
+              <img src={process.env.REACT_APP_API_URL + "/images/"+product.image} className="img-fluid" alt="product"/>
             </div>
             <div className="col-10 mx-auto col-md-6 my-3 text-center text-capitalize">
-              <h2>{product.name}</h2>
+              <h2 className="bg-light">{product.name}</h2>
               <h5 className="text-muted">{product.description}</h5>
               <h2>Price : {product.price}</h2>
               <div>

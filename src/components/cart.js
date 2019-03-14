@@ -14,6 +14,7 @@ class ProductCart extends Component {
       user : null,
       total:null
     }
+    this.checkout = this.checkout.bind(this);
   }
   render(){
     const products = this.props.cart  ;
@@ -38,14 +39,11 @@ class ProductCart extends Component {
             }
             </tbody>
             <tfoot>
-              <tr className="visible-xs">
-                <td className="text-center"><strong>Total 1.99</strong></td>
-              </tr>
               <tr>
                 <td><Link to="/"><button className="btn btn-outline-warning">Continue Shopping</button></Link> </td>
                 <td colSpan="2" className="hidden-xs"></td>
-                <td className="hidden-xs text-center"><strong>Total $ {this.props.totalAmount}</strong></td>
-                <td><a href="#" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></a></td>
+                <td className="hidden-xs text-center"><strong>Total $ {(this.props.totalAmount).toFixed(2)}</strong></td>
+                <td><button className="btn btn-success btn-block" onClick={this.checkout}>Checkout <i className="fa fa-angle-right"></i></button></td>
               </tr>
             </tfoot>
           </table>
@@ -72,6 +70,11 @@ class ProductCart extends Component {
     console.log(products);
   }
 
+  checkout(e){
+    this.props.checkout(e);
+
+  }
+
 }
 
 class CartElement extends Component{
@@ -88,24 +91,25 @@ class CartElement extends Component{
         <tr>
           <td data-th="Product">
             <div className="row">
-              <div className="col-sm-2 hidden-xs"><img src={'http://localhost:4000/images/'+product.thumbnail} alt="..." className="img-responsive" /></div>
-              <div className="col-sm-10">
-                <h4 className="nomargin">{this.props.product.name} {this.props.product.id}</h4>
-                <p>{product.description}</p>
+              <div className="col-sm-2 hidden-xs "><img src={process.env.REACT_APP_API_URL+'/images/'+product.thumbnail} alt="..." className="img-responsive" /></div>
+              <div className="col-sm-1"></div>
+              <div className="col-sm-9">
+                <h4 className="nomargin mx-2 text-success">{this.props.product.name} </h4>
+                <p className="mx-2">{product.description}</p>
               </div>
             </div>
           </td>
           <td data-th="Price">${product.price}</td>
           <td data-th="Quantity">
             <form className="form-inline">
-              <div className="input-group">
+              <div className="input-group row">
                 <button className="btn btn-warning btn-sm mr-1" onClick={(e) => this.decrementProduct(e,product.product_id)} ><FontAwesomeIcon icon="minus-circle" /></button>
                 <input type="text" className="form-control text-center" placeholder="1" value={this.props.product.qty} onChange={this.editQuantity.bind(this)}/>
                 <button className="btn btn-success btn-sm ml-1" onClick={(e) => this.incrementProduct(e,product.product_id)}><FontAwesomeIcon icon="plus-circle" /></button>
               </div>
             </form>
           </td>
-          <td data-th="Subtotal" className="text-center">$ {qty * Number(product.price)}</td>
+          <td data-th="Subtotal" className="text-center">$ {(qty * Number(product.price)).toFixed(2)}</td>
           <td className="actions" data-th="">
             <button className="btn btn-danger btn-sm" onClick={(e) => this.removeFromCart(e,product.product_id)}><FontAwesomeIcon icon="trash" /></button>
           </td>

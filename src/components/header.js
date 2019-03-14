@@ -11,11 +11,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class AppHeader extends Component {
   constructor(props){
     super(props);
+    const user = this.props.user
     this.state = {
-      cart : []
+      cart : [],
+      user : user
     }
   }
   render(){
+    const userName = this.props.user ? this.props.user.name : "Not Connected"
     return (
       <React.Fragment>
         <Navbar bg="light" expand="lg">
@@ -30,8 +33,8 @@ class AppHeader extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="#link">
                 <button className="btn btn-outline-primary">
-                  <FontAwesomeIcon icon="user" />
-                  Profile
+                  <FontAwesomeIcon icon="user" className="mr-2"/>
+                  User {userName}
                 </button>
               </Nav.Link>
             </Nav>

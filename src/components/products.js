@@ -16,23 +16,20 @@ class Products extends Component {
     console.log(this.props);
     this.state  = {
       isLoaded : false,
-      products : [],
+      products : this.props.products,
       showProducts : this.props.showProducts
     }
   }
   render(){
-    // const products = this.state.products;
-    // const products = this.state.showProducts;
-    const products = this.props.showProducts;
+    const products = this.state.showProducts;
     if(!this.state.isLoaded){
-      return <h1 className="tex-center text-info">No Data Loaded</h1>
+      return <h1 className="text-center text-info">No Data Loaded</h1>
     }else{
       return(
           <React.Fragment>
             <SearchBar handleSearch={this.props.handleSearch}/>
             <div className="py-5">
               <div className="container">
-                <Pagination totalRecords={110} pageLimit={10} pageNeighbours={1} onPageChanged={this.props.onPageChanged} />
                 <div className="row">
                   {
                     products.map(prod => {
@@ -40,6 +37,7 @@ class Products extends Component {
                     })
                   }
                 </div>
+                <Pagination totalRecords={110} pageLimit={12} pageNeighbours={1} onPageChanged={this.onPageChanged} />
                 {/*<Pagination totalRecords={110} pageLimit={10} pageNeighbours={1} onPageChanged={this.onPageChanged} />*/}
             <div className="text-center align-items-center">
             </div>
@@ -73,13 +71,25 @@ class Products extends Component {
       )
   }
 
+  componentWillReceiveProps(nextProps) {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+      // this.setState({ showProducts: nextProps.showProducts });
+      this.setState({
+        currentPage : 1,
+        showProducts :  nextProps.showProducts,
+         totalPages : nextProps.showProducts.length
+       });
+  }
+
   onPageChanged = data => {
     console.log("data", data);
    // const { allCountries } = this.state;
    const { currentPage, totalPages, pageLimit } = data;
+   const products = this.props.products;
 
    const offset = (currentPage - 1) * pageLimit;
-   const showProducts = this.state.products.slice(offset, offset + pageLimit);
+   const showProducts = products.slice(offset, offset + pageLimit);
+   console.log(showProducts);
 
    this.setState({currentPage, showProducts, totalPages });
  }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {Switch, Route, Link} from 'react-router-dom';
+import {Switch, Route, Link, withRouter} from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
 import tshirt from "./assets/tshirt.svg";
 
-import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup} from 'react-bootstrap';
+import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup, Modal} from 'react-bootstrap';
+
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -42,6 +43,7 @@ class App extends Component {
       showProducts : [],
       cart : cart,
       user : user,
+      showModal : false,
       totalAmount : 0
     };
     this.addToCart = this.addToCart.bind(this);
@@ -49,6 +51,7 @@ class App extends Component {
     this.removeFromCart = this.removeFromCart.bind(this);
     this.decrementProduct = this.decrementProduct.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.checkout = this.checkout.bind(this);
   }
   componentWillMount(){
     console.log("Will Mount");
@@ -78,20 +81,17 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <AppHeader cart={this.state.cart}/>
-        <h3 className="text-left text-primary">{this.state.totalAmount}</h3>
+        <AppHeader cart={this.state.cart} user={this.state.user}/>
+        {/*<h3 className="text-left text-primary">{this.state.totalAmount}</h3>*/}
         <Switch>
-          {/*
-            <Route exact path="/" component={Products}/>
-
-          */}
-          <Route exact path="/" render={(routeprops) => (<Products location={this.props.location} {...routeprops} addToCart={this.addToCart } handleSearch={this.handleSearch} showProducts={this.state.showProducts}/>)}/>
+          <Route exact path="/" render={(routeprops) => (<Products location={this.props.location} {...routeprops} addToCart={this.addToCart } handleSearch={this.handleSearch} showProducts={this.state.showProducts} products={this.state.products}/>)}/>
           <Route path="/product" render={(routeprops) => (<Product handleSearch={this.handleSearch}/>)} />
           <Route path="/cart" render={(routeprops) =>
               (<ProductCart location={this.props.location}
                  {...routeprops} addToCart={this.addToCart }
                   cart={this.state.cart}
                   totalAmount={this.state.totalAmount}
+                  checkout={this.checkout}
                    incrementProduct={this.incrementProduct}
                    decrementProduct={this.decrementProduct}
                    removeFromCart={this.removeFromCart}/>)}/>
@@ -101,6 +101,17 @@ class App extends Component {
           <Route component={Error404}/>
         </Switch>
         <Footer/>
+
+          <Modal show={this.state.showModal} >
+            <Modal.Header closeButton>
+              <Modal.Title>Card Checkout</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>You card Is validated and your T-shirts are  The way !</Modal.Body>
+            <Modal.Footer>
+
+            </Modal.Footer>
+          </Modal>
+
       </React.Fragment>
     );
   }
@@ -183,11 +194,6 @@ class App extends Component {
     })
 
 
-      // console.log("newCart", newCart);
-      // return {cart :  newCart}
-    // })
-    // this.setState({cart  : newCart})
-    // console.log(this.state);
     this.calculTotalCart();
   }
 
@@ -202,79 +208,41 @@ class App extends Component {
     e.preventDefault();
   }
 
-}
-
-class Element extends Component{
-
-  constructor(props){
-    super(props);
-    this.state  = {
-      isLoaded : false,
-      items : null
-    }
-  }
-  componentDidMount() {
-    fetch("http://locallhost:4000/products")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            items: result
-          });
-          console.log(result)
+  checkout(e){
+    e.preventDefault()
+    console.log(this.props.location);
+    if(JSON.parse(localStorage.getItem('user'))){
+      // window.location.href = "/";
+      // save order to database
+      fetch(process.env.REACT_APP_API_URL+'/order/new', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
+        body: JSON.stringify({cart : this.state.cart , user : this.state.user, totalAmount:this.state.totalAmount})
+      })
+      .then(
+        response => response.json(),
+        error => console.log('An error occurred.', error)
       )
-  }
-  render(){
-    const elements = this.state.items;
-    console.log(elements);
-    if(!this.state.isLoaded){
-      return(<div>....</div>)
+      .then((elt) => {
+        this.setState({showModal : true})
+        setTimeout(()=>{
+          this.setState({showModal : false, cart : [], totalAmount : 0})
+          localStorage.removeItem("cart")
+        },2000)
+        console.log(elt)})
+      .catch((err) => console.log(err))
+      // this.props.history.push('/');
+      // console.log("save item")
     }else{
-      console.log("elements loaded");
-      return(
-        <div>
-          <CardGroup>
-          {
-              elements.map(elt => (
-
-              <Card style={{ width: '18rem' }} key={elt.id}>
-                <Card.Img variant="top" src={"http://localhost:4000/images"+elt.image} />
-                <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                  </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </Card.Footer>
-              </Card>
-            )
-          )
-      }
-    </CardGroup>
-    </div>
-  );
-
+      window.location.href = "/login";
     }
-  }
 
+  }
 
 }
-
 
 
 export default App;

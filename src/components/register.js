@@ -1,5 +1,9 @@
 import React, {Component, Fragment} from 'react'
 
+import {Link} from 'react-router-dom';
+
+import { FormErrors } from './formerrors';
+
 class Register extends Component{
   constructor(props){
     super(props);
@@ -9,7 +13,11 @@ class Register extends Component{
       password : "",
       verifyPassword : "",
       address_1 : "",
-      day_phone : ""
+      day_phone : "",
+      formErrors: {email: '', password: ''},
+      emailValid: false,
+      formValid: false,
+      modal : false
     }
     this.handleChange = this.handleChange.bind(this);
     this.saveCustomer = this.saveCustomer.bind(this);
@@ -24,7 +32,7 @@ class Register extends Component{
               <div class="row">
                 <div class="col text-center">
                   <h1>Register</h1>
-                  <p class="text-h3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia. </p>
+                  <p class="text-h3">Research indicates that employees have three prime needs: Interesting work, recognition for doing a good job, and being let in on things that are going on in the company. </p>
                 </div>
               </div>
               <div class="row align-items-center">
@@ -37,6 +45,7 @@ class Register extends Component{
                   <input type="email" class="form-control" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange}/>
                 </div>
               </div>
+
               <div class="row align-items-center mt-4">
                 <div class="col">
                   <input type="password" class="form-control" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
@@ -45,15 +54,23 @@ class Register extends Component{
                   <input type="password" class="form-control" placeholder="Confirm Password" name="verifyPassword" value={this.state.verifyPassword} onChange={this.handleChange} />
                 </div>
               </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="credit card" name="credit_card" value={this.state.credit_card} onChange={this.handleChange}/>
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Mobile Phone" name="mob_phone" value={this.state.mob_phone} onChange={this.handleChange}/>
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Postal Code" name="postal_code" value={this.state.postal_code} onChange={this.handleChange}/>
+                </div>
+              </div>
               <div class="row justify-content-start mt-4">
                 <div class="col">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input" />
-                      I Read and Accept <a href="https://www.froala.com">Terms and Conditions</a>
-                    </label>
-                  </div>
-
                   <button class="btn btn-primary mt-4" onClick={this.saveCustomer}>Submit</button>
                 </div>
               </div>
@@ -75,7 +92,7 @@ class Register extends Component{
   saveCustomer(e){
     e.preventDefault();
     // {name, email, password} = this.state;
-    fetch('http://localhost:4000/customer/new', {
+    fetch(process.env.REACT_APP_API_URL+'/customer/new', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -85,6 +102,9 @@ class Register extends Component{
         name:this.state.name,
         password:this.state.password,
         email:this.state.email,
+        credit_card:this.state.credit_card,
+        mob_phone:this.state.mob_phone,
+        postal_code:this.state.postal_code,
       })
     })
     .then((elt) => console.log(elt))
