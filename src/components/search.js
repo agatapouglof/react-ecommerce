@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup} from 'react-bootstrap';
+import { Button, Form, FormControl, FormGroup} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -12,6 +12,8 @@ class SearchBar extends Component{
   }
   render(){
     return(
+    <Fragment>
+
       <div className="container-fluid searchbar">
         <div className="row justify-content-center align-items-center">
           <Form inline>
@@ -22,6 +24,7 @@ class SearchBar extends Component{
           </Form>
         </div>
       </div>
+    </Fragment>
 
     );
   }

@@ -13,10 +13,7 @@ class Details extends Component {
     this.state = {product : null};
   }
   render(){
-    // const product = this.props.location.state.product;
 
-    // this.setState({product : product});
-    // {this.state.product}
     const product = this.state.product;
     if(product){
       return(
@@ -62,8 +59,6 @@ class Details extends Component {
   }
 
   componentDidMount(){
-    console.log("component did mount", this.props.location.state)
-    console.log("details props", this.props)
     if(this.props.location){
       this.setState({product  : this.props.location.state.product});
     }

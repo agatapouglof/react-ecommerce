@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import {Switch, Route, Link, withRouter} from 'react-router-dom';
-import logo from './logo.svg';
+import {Switch, Route} from 'react-router-dom';
 import './App.css';
 
 import tshirt from "./assets/tshirt.svg";
 
-import {CardGroup, Card, Button, Container, Form, FormControl, FormGroup, Modal} from 'react-bootstrap';
+import { Modal} from 'react-bootstrap';
 
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -27,7 +26,7 @@ import Footer from './components/footer.js';
 library.add(faSearch, faShoppingCart, faSyncAlt, faTrash, faPlusCircle, faMinusCircle, faUser)
 class App extends Component {
   constructor(props){
-    console.log(process.env.REACT_APP_API_URL);
+    // console.log(process.env.REACT_APP_API_URL);
     super(props);
     let cart = [];
     let user = null;
@@ -36,7 +35,6 @@ class App extends Component {
     }
     if(localStorage.getItem('user')){
        user = JSON.parse(localStorage.getItem('user'))
-      console.log("IS USER IN STORAGE");
     }
     this.state = {
       products : [],
@@ -54,7 +52,6 @@ class App extends Component {
     this.checkout = this.checkout.bind(this);
   }
   componentWillMount(){
-    console.log("Will Mount");
     fetch(process.env.REACT_APP_API_URL+"/products")
       .then(res => res.json())
       .then(
@@ -64,7 +61,6 @@ class App extends Component {
             products: result,
             showProducts: result.slice(0,10)
           });
-          console.log(result)
         },
         (error) => {
           this.setState({
@@ -145,7 +141,6 @@ class App extends Component {
   }
   incrementProduct(product_id){
     let cart = this.state.cart;
-    console.log('show increment product in app js');
     cart.map((elt)=>{
       if(elt.product_id == product_id){
         elt.qty = elt.qty+1;
@@ -154,7 +149,6 @@ class App extends Component {
         return elt;
       }
     });
-    console.log(cart);
     this.setState({cart : cart})
     localStorage.setItem('cart', JSON.stringify(cart));
     this.calculTotalCart();
@@ -175,18 +169,14 @@ class App extends Component {
     this.calculTotalCart();
   }
   removeFromCart(product_id){
-    console.log('remove from cart')
     let cart = this.state.cart;
     let prom = new Promise(function(resolve,reject){
       let newCart = cart.filter((elt) => {
         return elt.product_id != product_id
       })
-      console.log('resolve');
       resolve(newCart);
     });
     prom.then((elt) =>  {
-      console.log("then");
-      console.log(elt);
 
       this.setState({cart  : elt})
       this.calculTotalCart();
@@ -198,19 +188,16 @@ class App extends Component {
   }
 
   handleSearch(e){
-    console.log(e.target.value);
     let toSearch = e.target.value
     let result =  this.state.products.filter((elt) =>{
       return elt.name.toLowerCase().includes(toSearch,0);
     })
     this.setState({showProducts : result})
-    console.log(result);
     e.preventDefault();
   }
 
   checkout(e){
     e.preventDefault()
-    console.log(this.props.location);
     if(JSON.parse(localStorage.getItem('user'))){
       // window.location.href = "/";
       // save order to database

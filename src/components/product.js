@@ -8,7 +8,6 @@ import '../App.css';
 
 class Product extends Component {
   render(){
-    console.log(this.props.addToCart);
     const inCart = true;
     return (
       <React.Fragment>
@@ -20,9 +19,6 @@ class Product extends Component {
               }}>
             <div className="lor img-container p-5" onClick={() => console.log("clicked on Image")}>
                 <img src={process.env.REACT_APP_API_URL+"/images/"+this.props.product.image}  className="card-img-top"/>
-              {/*<button className="cart-btn" disabled={inCart ? true : false} onClick={() => console.log("added to the cart")}>
-              {inCart?(<p className="text-capitalize mb-0" disabled> in cart </p>) : <FontAwesomeIcon icon="shopping-cart" />}
-            </button>*/}
             </div>
             <div className="card-body ">
               <h4 className="taille text-center text-dark align-self-center mb-0">

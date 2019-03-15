@@ -13,7 +13,6 @@ import SearchBar from './search.js';
 class Products extends Component {
   constructor(props){
     super(props);
-    console.log(this.props);
     this.state  = {
       isLoaded : false,
       products : this.props.products,
@@ -48,7 +47,6 @@ class Products extends Component {
     }
   }
   componentDidMount() {
-    console.log("productssss did mount", this.props);
     fetch(process.env.REACT_APP_API_URL+"/products")
       .then(res => res.json())
       .then(
@@ -57,11 +55,8 @@ class Products extends Component {
             isLoaded: true,
             products: result,
           });
-          console.log(result)
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
+
         (error) => {
           this.setState({
             isLoaded: true,
@@ -72,8 +67,7 @@ class Products extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // You don't have to do this check first, but it can help prevent an unneeded render
-      // this.setState({ showProducts: nextProps.showProducts });
+
       this.setState({
         currentPage : 1,
         showProducts :  nextProps.showProducts,
@@ -82,14 +76,11 @@ class Products extends Component {
   }
 
   onPageChanged = data => {
-    console.log("data", data);
-   // const { allCountries } = this.state;
    const { currentPage, totalPages, pageLimit } = data;
    const products = this.props.products;
 
    const offset = (currentPage - 1) * pageLimit;
    const showProducts = products.slice(offset, offset + pageLimit);
-   console.log(showProducts);
 
    this.setState({currentPage, showProducts, totalPages });
  }

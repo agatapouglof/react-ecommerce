@@ -56,7 +56,6 @@ class ProductCart extends Component {
   }
 
   componentDidMount(){
-    console.log("cart props", this.props);
     const prod = this.props.location.state ? this.props.location.state.newproduct : null;
     let products = this.state.products;
     this.setState({products : products});
@@ -67,7 +66,6 @@ class ProductCart extends Component {
       this.props.addToCart(prod);
       // products.push(prod);
     }
-    console.log(products);
   }
 
   checkout(e){
@@ -80,7 +78,6 @@ class ProductCart extends Component {
 class CartElement extends Component{
   constructor(props){
     super(props);
-    console.log(props);
     this.state = {product : null, qty : 1};
   }
   render(){
@@ -104,7 +101,7 @@ class CartElement extends Component{
             <form className="form-inline">
               <div className="input-group row">
                 <button className="btn btn-warning btn-sm mr-1" onClick={(e) => this.decrementProduct(e,product.product_id)} ><FontAwesomeIcon icon="minus-circle" /></button>
-                <input type="text" className="form-control text-center" placeholder="1" value={this.props.product.qty} onChange={this.editQuantity.bind(this)}/>
+                <input type="text" className="form-control text-center" placeholder="1" value={this.props.product.qty}/>
                 <button className="btn btn-success btn-sm ml-1" onClick={(e) => this.incrementProduct(e,product.product_id)}><FontAwesomeIcon icon="plus-circle" /></button>
               </div>
             </form>
@@ -118,14 +115,6 @@ class CartElement extends Component{
     );
   }
 
-  componentDidMount(){
-    console.log("cart element mounted");
-    console.log("cart props", this.props);
-  }
-  editQuantity(){
-    console.log('edit Quantity');
-    // this.setState({qty : })
-  }
   incrementProduct(e, product_id){
     e.preventDefault();
     this.props.incrementProduct(product_id)
