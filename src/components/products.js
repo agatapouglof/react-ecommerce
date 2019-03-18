@@ -31,7 +31,6 @@ class Products extends Component {
       return(
           <React.Fragment>
             <SearchBar handleSearch={this.handleSearch}/>
-            {this.props.showProducts.length}
             <div className="py-5">
               <div className="container">
                 <div className="row">

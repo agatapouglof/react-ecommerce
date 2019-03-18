@@ -28,55 +28,55 @@ class Register extends Component{
   render(){
     return(
       <section>
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-8 col-xl-6">
-              <div class="row">
-                <div class="col text-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-8 col-xl-6">
+              <div className="row">
+                <div className="col text-center">
                   <h1>Register</h1>
-                  <p class="text-h3">Research indicates that employees have three prime needs: Interesting work, recognition for doing a good job, and being let in on things that are going on in the company. </p>
+                  <p className="text-h3">Research indicates that employees have three prime needs: Interesting work, recognition for doing a good job, and being let in on things that are going on in the company. </p>
                 </div>
               </div>
               <div >
                 <FormErrors formErrors={this.state.formErrors} />
               </div>
-              <div class="row align-items-center">
-                <div class="col mt-4">
-                  <input type="text" class="form-control" placeholder="Your Name" value={this.state.name} onChange={this.handleChange} name="name"/>
+              <div className="row align-items-center">
+                <div className="col mt-4">
+                  <input type="text" className="form-control" placeholder="Your Name" value={this.state.name} onChange={this.handleChange} name="name"/>
                 </div>
               </div>
-              <div class="row align-items-center mt-4">
-                <div class="col">
-                  <input type="email" class="form-control" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange}/>
+              <div className="row align-items-center mt-4">
+                <div className="col">
+                  <input type="email" className="form-control" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange}/>
                 </div>
               </div>
 
-              <div class="row align-items-center mt-4">
-                <div class="col">
-                  <input type="password" class="form-control" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+              <div className="row align-items-center mt-4">
+                <div className="col">
+                  <input type="password" className="form-control" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
                 </div>
-                <div class="col">
-                  <input type="password" class="form-control" placeholder="Confirm Password" name="verifyPassword" value={this.state.verifyPassword} onChange={this.handleChange} />
-                </div>
-              </div>
-              <div class="row align-items-center mt-4">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="credit card" name="credit_card" value={this.state.credit_card} onChange={this.handleChange}/>
+                <div className="col">
+                  <input type="password" className="form-control" placeholder="Confirm Password" name="verifyPassword" value={this.state.verifyPassword} onChange={this.handleChange} />
                 </div>
               </div>
-              <div class="row align-items-center mt-4">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Mobile Phone" name="mob_phone" value={this.state.mob_phone} onChange={this.handleChange}/>
+              <div className="row align-items-center mt-4">
+                <div className="col">
+                  <input type="text" className="form-control" placeholder="credit card" name="credit_card" value={this.state.credit_card} onChange={this.handleChange}/>
                 </div>
               </div>
-              <div class="row align-items-center mt-4">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Postal Code" name="postal_code" value={this.state.postal_code} onChange={this.handleChange}/>
+              <div className="row align-items-center mt-4">
+                <div className="col">
+                  <input type="text" className="form-control" placeholder="Mobile Phone" name="mob_phone" value={this.state.mob_phone} onChange={this.handleChange}/>
                 </div>
               </div>
-              <div class="row justify-content-start mt-4">
-                <div class="col">
-                  <button class="btn btn-primary mt-4" onClick={this.saveCustomer} disabled={!this.state.formValid}>Submit</button>
+              <div className="row align-items-center mt-4">
+                <div className="col">
+                  <input type="text" className="form-control" placeholder="Postal Code" name="postal_code" value={this.state.postal_code} onChange={this.handleChange}/>
+                </div>
+              </div>
+              <div className="row justify-content-start mt-4">
+                <div className="col">
+                  <button className="btn btn-primary mt-4" onClick={this.saveCustomer} disabled={!this.state.formValid}>Submit</button>
                 </div>
               </div>
             </div>
