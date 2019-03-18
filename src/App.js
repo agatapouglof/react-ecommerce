@@ -52,6 +52,7 @@ class App extends Component {
     this.checkout = this.checkout.bind(this);
   }
   componentWillMount(){
+    // showProducts: result.slice(0,13)
     fetch(process.env.REACT_APP_API_URL+"/products")
       .then(res => res.json())
       .then(
@@ -59,7 +60,7 @@ class App extends Component {
           this.setState({
             isLoaded: true,
             products: result,
-            showProducts: result.slice(0,10)
+            showProducts: result
           });
         },
         (error) => {
@@ -96,7 +97,7 @@ class App extends Component {
           <Route path="/login" component={Login}/>
           <Route component={Error404}/>
         </Switch>
-        <Footer/>
+          {/*<Footer/>*/}
 
           <Modal show={this.state.showModal} >
             <Modal.Header closeButton>
